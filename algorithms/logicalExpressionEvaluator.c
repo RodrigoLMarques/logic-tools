@@ -42,7 +42,6 @@ Operation* createOperation(Operator operator, int operandNumber);
 Operator parseOperator(const char** expr);
 Operation* parseOperand(const char** expr);
 Operation* parseExpression(const char** expr);
-void printOperation(Operation* op);
 void freeOperation(Operation* op);
 
 int resolveExpression(Operation *op);
@@ -58,13 +57,8 @@ int main(int argc, char *argv[]) {
     const char* expression = argv[1];
     Operation* root = parseExpression(&expression);
 
-    printf("Parsed Expression: ");
-    printOperation(root);
-    printf("\n");
-
     int result = resolveExpression(root);
-    printf("Expression Result: %d", result);
-    printf("\n");
+    printf("%d", result);
 
     freeOperation(root);
 
@@ -153,33 +147,6 @@ Operation* parseExpression(const char** expr) {
     return left;
 }
 
-void printOperation(Operation* op) {
-    if (op->isBoolean) {
-        printf("%s", op->boolean ? "T" : "F");
-        return;
-    }
-
-    if (op->operator == NOT) {
-        printf("(~");
-        if (op->operations[0]) printOperation(op->operations[0]);
-         printf(")");
-        return;
-    }
-
-    printf("(");
-    if (op->operations[0]) printOperation(op->operations[0]);
-
-    switch (op->operator) {
-        case AND: printf(" & "); break;
-        case OR: printf(" | "); break;
-        case XOR: printf(" ^ "); break;
-        case IMPLIES: printf(" -> "); break;
-    }
-
-    if (op->operations[1]) printOperation(op->operations[1]);
-    printf(")");
-}
-
 void freeOperation(Operation* op) {
     if (op) {
         for (int i = 0; i < MAX_OPERANDS; i++) {
@@ -209,9 +176,7 @@ int resolveOperand(Operator operator, int operandNumber, int values[operandNumbe
         case NOT: return resolveNotOperand(operandNumber, values); break;
         case XOR: return resolveXorOperand(operandNumber, values); break;
         case IMPLIES: return resolveImpliesOperand(operandNumber, values); break;
-        default: 
-            fprintf(stderr, "Error: Unsupported operator %d\n", operator); 
-            return 0;
+        default: error("Error: Unsupported operator"); 
     }
 }
 

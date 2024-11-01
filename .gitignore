@@ -1,7 +1,29 @@
 ### General ###
 .vscode
 
+### Node ###
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Dependency directories
+node_modules/
+
+# Optional npm cache directory
+.npm
+
+# dotenv environment variable files
+.env
+.env.development.local
+.env.test.local
+.env.production.local
+.env.local
+
 ### C ###
+# Build
+build
+
 # Prerequisites
 *.d
 
@@ -54,3 +76,4 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+
