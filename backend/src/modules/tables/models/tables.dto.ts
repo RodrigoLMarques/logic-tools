@@ -1,9 +1,13 @@
-import { IsNotEmpty, IsObject, IsString } from 'class-validator';
+import { IsArray, IsNotEmpty, IsString } from 'class-validator';
 
 export class GenerateTruthTableDto {
+  // @IsNotEmpty()
+  // @IsObject()
+  // variables: { [key: string]: boolean };
+
   @IsNotEmpty()
-  @IsObject()
-  variables: { [key: string]: boolean };
+  @IsArray()
+  variables: string[];
 
   @IsNotEmpty()
   @IsString()

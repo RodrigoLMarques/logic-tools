@@ -1,4 +1,4 @@
-import { Body, Controller, Get } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
 import { GenerateTruthTableDto } from './models/tables.dto';
 import { TruthTableEntity } from './models/tables.entity';
 import { TablesService } from './tables.service';
@@ -7,7 +7,7 @@ import { TablesService } from './tables.service';
 export class TablesController {
   constructor(private readonly tablesService: TablesService) {}
 
-  @Get('truth')
+  @Post('truth')
   async generateTruthTable(
     @Body() body: GenerateTruthTableDto,
   ): Promise<TruthTableEntity> {

@@ -10,10 +10,9 @@ export class TablesService {
     dto: GenerateTruthTableDto,
   ): Promise<TruthTableEntity> {
     const truthTable: TruthTableEntity = {};
-    const variables = Object.keys(dto.variables);
-    const numRows = 2 ** variables.length;
+    const numRows = 2 ** dto.variables.length;
 
-    variables.forEach((variable) => {
+    dto.variables.forEach((variable) => {
       truthTable[variable] = [];
     });
     truthTable['result'] = [];
@@ -21,8 +20,8 @@ export class TablesService {
     for (let i = 0; i < numRows; i++) {
       const rowValues: Record<string, boolean> = {};
 
-      variables.forEach((variable, index) => {
-        const value = Boolean((~i >> (variables.length - index - 1)) & 1);
+      dto.variables.forEach((variable, index) => {
+        const value = Boolean((~i >> (dto.variables.length - index - 1)) & 1);
         truthTable[variable].push(value);
         rowValues[variable] = value;
       });
