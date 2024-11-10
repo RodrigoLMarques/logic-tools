@@ -1,0 +1,15 @@
+FROM node:18-alpine
+
+WORKDIR /home/node/app
+
+COPY . .
+
+RUN chmod +x src/bin/logicalExpressionEvaluator
+
+RUN npm install --include=optional -g @nestjs/cli
+
+RUN npm install
+
+EXPOSE 3000
+
+CMD ["npm", "run", "start:dev"]

@@ -45,13 +45,14 @@ export class TablesService {
           : 'F'
         : `{${varName}}`;
     });
-
     const executablePath = path.join(
       process.cwd(),
       '..',
       'algorithms',
       'logicalExpressionEvaluator',
     );
+
+    console.log(executablePath);
 
     return new Promise((resolve, reject) => {
       exec(`${executablePath} "${expression}"`, (error, stdout, stderr) => {

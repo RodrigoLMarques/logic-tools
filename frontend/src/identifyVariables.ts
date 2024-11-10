@@ -8,19 +8,30 @@ const operatorMappings = [
 
 const operators = operatorMappings.flatMap(mapping => mapping.symbols);
 
+// TODO: Fix when input is "(())"
+
 export function identifyVariables(expression: string) {
-  const operatorRegex = new RegExp(`\\s*(${operators.map(op => op.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})\\s*`, 'g');
-  
-  const tokens = expression.split(operatorRegex).filter(token => token.trim() !== '');
+  const operatorRegex = new RegExp(
+    `\\s*(${operators.map(op => op.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')}|[()])\\s*`,
+    'g'
+  );
+
+  const tokens = expression
+    .split(operatorRegex)
+    .filter(token => token.trim() !== '');
 
   const variables = new Set();
-  const transformedExpression = tokens.map(token => {
-    if (!operators.includes(token)) {
+  const result = tokens.map(token => {
+    if (token === '(' || token === ')') {
+      return token;
+    } else if (!operators.includes(token)) {
       variables.add(token);
       return `{${token}}`;
     }
     return token;
   }).join(" ");
+
+  const transformedExpression = result.replace("( ", "(").replace(" )", ")");
 
   return [transformedExpression, Array.from(variables)];
 }
