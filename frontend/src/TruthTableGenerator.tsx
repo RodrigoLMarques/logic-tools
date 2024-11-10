@@ -16,8 +16,8 @@ export default function TruthTableGenerator() {
         </div>
       </main>
       <GitHubCard
-        name="RodrigoLMarques"
-        githubUrl="https://github.com/RodrigoLMarques"
+        name="RodrigoLMarques/logic-tools"
+        githubUrl="https://github.com/RodrigoLMarques/logic-tools"
       />
     </div>
   );

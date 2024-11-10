@@ -4,12 +4,15 @@ WORKDIR /home/node/app
 
 COPY . .
 
-RUN chmod +x src/bin/logicalExpressionEvaluator
+RUN apk update && \
+    apk add --no-cache gcc musl-dev
+
+# RUN gcc /home/node/app/algorithms/logicalExpressionEvaluator.c -o /home/node/app/src/bin/logicalExpressionEvaluator
 
 RUN npm install --include=optional -g @nestjs/cli
 
 RUN npm install
 
-EXPOSE 3000
+EXPOSE 3001
 
 CMD ["npm", "run", "start:dev"]

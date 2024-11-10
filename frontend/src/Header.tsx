@@ -11,7 +11,7 @@ export default function Header() {
               <Button
                 variant="ghost"
                 className="text-foreground bg-white hover:bg-blue-500 hover:text-white transition-colors duration-200"
-                onClick={() => (window.location.hash = "#truth-table")}
+                onClick={() => (window.location.href = "/")}
               >
                 Tabela Verdade
               </Button>
@@ -20,7 +20,7 @@ export default function Header() {
               <Button
                 variant="ghost"
                 className="text-foreground bg-white hover:bg-blue-500 hover:text-white transition-colors duration-200"
-                onClick={() => (window.location.hash = "#proposition-validator")}
+                onClick={() => (window.location.href = "/")}
               >
                 ...
               </Button>
