@@ -55,7 +55,12 @@ export class TablesService {
           : 'F'
         : `{${varName}}`;
     });
-    const executablePath = path.join(process.env.PATH_TO_EXEC);
+    const executablePath = path.join(
+      process.cwd(),
+      '..',
+      'algorithms',
+      'logicalExpressionEvaluator',
+    );
 
     console.log(executablePath);
 

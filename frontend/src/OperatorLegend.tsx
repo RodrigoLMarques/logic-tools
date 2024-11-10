@@ -9,11 +9,11 @@ import {
 } from "@/components/ui/table";
 
 const operatorMappings = [
-  { operator: "AND", precedence: 2, symbols: ["AND", "&"] },
-  { operator: "OR", precedence: 2, symbols: ["OR", "|"] },
-  { operator: "NOT", precedence: 3, symbols: ["NOT", "!", "~"] },
-  { operator: "XOR", precedence: 2, symbols: ["XOR", "^"] },
-  { operator: "IMPLIES", precedence: 3, symbols: ["IMPLIES", "->", "=>"] },
+  { operator: "E", precedence: 2, symbols: ["AND", "&"] },
+  { operator: "OU", precedence: 2, symbols: ["OR", "|"] },
+  { operator: "NÃO", precedence: 3, symbols: ["NOT", "!", "~"] },
+  { operator: "OU Exclusivo", precedence: 2, symbols: ["XOR", "^"] },
+  { operator: "IMPLICA", precedence: 3, symbols: ["IMPLIES", "->", "=>"] },
 ];
 
 export default function OperatorLegend() {
