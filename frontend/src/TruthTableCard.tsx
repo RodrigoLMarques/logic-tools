@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -18,11 +17,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { identifyVariables } from "./identifyVariables";
+import { useState } from "react";
 
-const getTableTruthData = async (expr: string) => {
-  const [expression, variables] = identifyVariables(expr);
-
+const getTableTruthData = async (expression: string) => {
   try {
     const url = "http://localhost:3000/tables/truth";
     const response = await fetch(url, {
@@ -32,7 +29,6 @@ const getTableTruthData = async (expr: string) => {
       },
       body: JSON.stringify({
         expression,
-        variables,
       }),
     });
 
