@@ -114,7 +114,11 @@ export default function TruthTableCard() {
               }
             }}
           />
-          <Button onClick={addExpression} disabled={isLoading}>
+          <Button
+            className="bg-header-bg hover:bg-header-bg/90 text-soft-white"
+            onClick={addExpression}
+            disabled={isLoading}
+          >
             {isLoading ? "Adicionando..." : "Adicionar"}
           </Button>
           <Button onClick={clearTable} variant="outline">
