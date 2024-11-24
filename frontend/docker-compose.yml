@@ -1,0 +1,17 @@
+services:
+  frontend:
+    container_name: frontend
+    restart: always
+    ports:
+      - 4173:4173
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    networks:
+      - frontend_network
+
+networks:
+  frontend_network:
+    driver: bridge

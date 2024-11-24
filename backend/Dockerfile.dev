@@ -1,18 +1,14 @@
 FROM node:18-alpine
 
+USER root
+
 WORKDIR /home/node/app
 
-COPY . .
+RUN npm install --include=optional -g @nestjs/cli
 
 RUN apk update && \
     apk add --no-cache gcc musl-dev
 
-# RUN gcc /home/node/app/algorithms/logicalExpressionEvaluator.c -o /home/node/app/src/bin/logicalExpressionEvaluator
-
-RUN npm install --include=optional -g @nestjs/cli
-
-RUN npm install
-
-EXPOSE 3001
+EXPOSE 3000
 
 CMD ["npm", "run", "start:dev"]

@@ -1,10 +1,10 @@
 FROM node:18-buster
 
-WORKDIR /home/node/app
+WORKDIR /usr/src/api
 
 COPY . .
 
-RUN npm install --quiet --no-fund --loglevel=error
+RUN npm install --quiet --no-optional --no-fund --loglevel=error
 
 RUN npm install rollup@latest --save-dev
 
@@ -14,4 +14,4 @@ RUN npm run build
 
 EXPOSE 4173
 
-CMD ["npm", "run", "preview"]
+CMD ["npm", "run", "preview", "--", "--host"]

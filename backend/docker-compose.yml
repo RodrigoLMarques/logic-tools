@@ -1,0 +1,19 @@
+services:
+  backend:
+    container_name: backend
+    restart: always
+    volumes:
+      - ./:/home/node/app
+    ports:
+      - "3000:3000"
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    env_file:
+      - .env
+    networks:
+      - backend_network
+
+networks:
+  backend_network:
+    driver: bridge
