@@ -11,7 +11,7 @@ export default function TruthTableGenerator() {
         <div className="w-3/5 max-w-3xl">
           <TruthTableCard />
         </div>
-        <div className="w-2/5">
+        <div className="w-2/7">
           <OperatorLegend />
         </div>
       </main>
