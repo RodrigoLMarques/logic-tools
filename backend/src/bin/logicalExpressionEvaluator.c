@@ -53,6 +53,8 @@ int resolveXorOperand(int operandNumber, int values[MAX_OPERANDS]);
 int resolveImpliesOperand(int operandNumber, int values[MAX_OPERANDS]);
 void error(const char* msg);
 
+// TODO: Fix when input is "( T & F )2"
+
 int main(int argc, char *argv[]) {
     const char* expression = argv[1];
     Operation* root = parseExpression(&expression);

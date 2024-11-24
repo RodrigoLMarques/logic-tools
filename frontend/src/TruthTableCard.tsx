@@ -1,15 +1,14 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 import {
   Table,
   TableBody,
@@ -17,76 +16,89 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
+} from "@/components/ui/table";
+import { useState } from "react";
 
-const getTableTruthData = async (expression: string) => {
+const getTableTruthData = async (expressions: string[]) => {
   try {
-    const url = "http://localhost:3000/tables/truth"
+    const url = "http://localhost:3000/tables/truth";
     const response = await fetch(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        expression,
+        expressions,
       }),
-    })
+    });
 
-    const data = await response.json()
-    return data
+    const data = await response.json();
+    return data;
   } catch (error) {
-    console.error("Erro:", error)
+    console.error("Erro:", error);
+    return null;
   }
-}
+};
 
 type ResultColumn = {
-  expression: string
-  values: boolean[]
-}
+  expression: string;
+  values: boolean[];
+};
 
 export default function TruthTableCard() {
-  const [expression, setExpression] = useState("")
-  const [results, setResults] = useState<ResultColumn[]>([])
-  const [variables, setVariables] = useState<string[]>([])
-  const [isLoading, setIsLoading] = useState(false)
+  const [currentExpression, setCurrentExpression] = useState("");
+  const [expressions, setExpressions] = useState<string[]>([]);
+  const [results, setResults] = useState<ResultColumn[]>([]);
+  const [variables, setVariables] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const generateTruthTable = async () => {
-    setIsLoading(true)
+  const addExpression = async () => {
+    if (currentExpression.trim() === "") return;
+
+    console.log(variables);
+
+    setIsLoading(true);
+    const newExpressions = [...expressions, currentExpression];
+    setExpressions(newExpressions);
+    setCurrentExpression("");
+
     try {
-      const data = await getTableTruthData(expression)
-      const newVariables = Object.keys(data).slice(0, -1)
-      const newColumn: ResultColumn = {
-        expression: expression,
-        values: data[Object.keys(data).slice(-1)[0]],
-      }
-      
-      if (results.length === 0) {
-        setVariables(newVariables)
-        setResults([
-          ...newVariables.map(v => ({ expression: v, values: data[v] })),
-          newColumn
-        ])
-      } else {
-        setResults([...results, newColumn])
+      const data = await getTableTruthData(newExpressions);
+      if (data) {
+        const newVariables = Object.keys(data).filter(
+          (key) => !newExpressions.includes(key)
+        );
+        setVariables(newVariables);
+
+        const newResults: ResultColumn[] = [
+          ...newVariables.map((v) => ({ expression: v, values: data[v] })),
+          ...newExpressions.map((exp) => ({
+            expression: exp,
+            values: data[exp],
+          })),
+        ];
+        setResults(newResults);
       }
     } catch (error) {
-      console.error("Error generating truth table:", error)
+      console.error("Error generating truth table:", error);
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   const clearTable = () => {
-    setResults([])
-    setVariables([])
-  }
+    setExpressions([]);
+    setResults([]);
+    setVariables([]);
+    setCurrentExpression("");
+  };
 
   return (
     <Card className="w-full">
       <CardHeader>
         <CardTitle>Gerador de Tabela Verdade</CardTitle>
         <CardDescription>
-          Insira uma expressão lógica para gerar sua tabela verdade.
+          Insira expressões lógicas para gerar sua tabela verdade.
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -94,11 +106,16 @@ export default function TruthTableCard() {
           <Input
             type="text"
             placeholder="Insira a expressão lógica (exemplo: a & b)"
-            value={expression}
-            onChange={(e) => setExpression(e.target.value)}
+            value={currentExpression}
+            onChange={(e) => setCurrentExpression(e.target.value)}
+            onKeyPress={(e) => {
+              if (e.key === "Enter") {
+                addExpression();
+              }
+            }}
           />
-          <Button onClick={generateTruthTable} disabled={isLoading}>
-            {isLoading ? "Gerando..." : "Gerar"}
+          <Button onClick={addExpression} disabled={isLoading}>
+            {isLoading ? "Adicionando..." : "Adicionar"}
           </Button>
           <Button onClick={clearTable} variant="outline">
             Limpar
@@ -109,11 +126,10 @@ export default function TruthTableCard() {
           <Table>
             <TableHeader>
               <TableRow>
-                {variables.map((variable) => (
-                  <TableHead key={variable} className="text-center">{variable}</TableHead>
-                ))}
-                {results.slice(variables.length).map((result, index) => (
-                  <TableHead key={index} className="text-center">{result.expression}</TableHead>
+                {results.map((column, index) => (
+                  <TableHead key={index} className="text-center">
+                    {column.expression}
+                  </TableHead>
                 ))}
               </TableRow>
             </TableHeader>
@@ -121,7 +137,10 @@ export default function TruthTableCard() {
               {results[0].values.map((_, rowIndex) => (
                 <TableRow key={rowIndex}>
                   {results.map((column, columnIndex) => (
-                    <TableCell key={`${columnIndex}-${rowIndex}`} className="text-center">
+                    <TableCell
+                      key={`${columnIndex}-${rowIndex}`}
+                      className="text-center"
+                    >
                       {column.values[rowIndex] ? "V" : "F"}
                     </TableCell>
                   ))}
@@ -132,5 +151,5 @@ export default function TruthTableCard() {
         )}
       </CardContent>
     </Card>
-  )
+  );
 }
