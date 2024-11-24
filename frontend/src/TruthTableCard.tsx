@@ -18,6 +18,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useState } from "react";
+import { toast } from "react-hot-toast";
 
 const getTableTruthData = async (expressions: string[]) => {
   try {
@@ -32,10 +33,15 @@ const getTableTruthData = async (expressions: string[]) => {
       }),
     });
 
+    if (!response.ok) {
+      throw new Error(`Erro ao buscar dados: ${response.statusText}`);
+    }
+
     const data = await response.json();
     return data;
   } catch (error) {
     console.error("Erro:", error);
+    toast.error("Falha ao resolver a expressão.");
     return null;
   }
 };
@@ -49,17 +55,15 @@ export default function TruthTableCard() {
   const [currentExpression, setCurrentExpression] = useState("");
   const [expressions, setExpressions] = useState<string[]>([]);
   const [results, setResults] = useState<ResultColumn[]>([]);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [variables, setVariables] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
   const addExpression = async () => {
     if (currentExpression.trim() === "") return;
 
-    console.log(variables);
-
     setIsLoading(true);
     const newExpressions = [...expressions, currentExpression];
-    setExpressions(newExpressions);
     setCurrentExpression("");
 
     try {
@@ -78,9 +82,11 @@ export default function TruthTableCard() {
           })),
         ];
         setResults(newResults);
+        setExpressions(newExpressions);
       }
     } catch (error) {
       console.error("Error generating truth table:", error);
+      toast.error("Falha ao resolver a expressão.");
     } finally {
       setIsLoading(false);
     }
