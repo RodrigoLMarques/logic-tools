@@ -55,7 +55,6 @@ export default function TruthTableCard() {
   const [currentExpression, setCurrentExpression] = useState("");
   const [expressions, setExpressions] = useState<string[]>([]);
   const [results, setResults] = useState<ResultColumn[]>([]);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [variables, setVariables] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -65,6 +64,8 @@ export default function TruthTableCard() {
     setIsLoading(true);
     const newExpressions = [...expressions, currentExpression];
     setCurrentExpression("");
+
+    console.log(variables);
 
     try {
       const data = await getTableTruthData(newExpressions);
