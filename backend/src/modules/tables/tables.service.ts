@@ -23,7 +23,8 @@ export class TablesService {
   async generateTruthTable(
     dto: GenerateTruthTableDto,
   ): Promise<TruthTableEntity> {
-    // Processa todas as expressões e coleta as variáveis únicas
+    console.log(dto.expressions);
+
     const expressions = dto.expressions.map((expr) =>
       this.extractVariables(expr),
     );
@@ -34,7 +35,6 @@ export class TablesService {
     const truthTable: TruthTableEntity = {};
     const numRows = 2 ** allVariables.length;
 
-    // Inicializa a tabela verdade para todas as variáveis e expressões
     allVariables.forEach((variable) => {
       truthTable[variable] = [];
     });
@@ -45,14 +45,12 @@ export class TablesService {
     for (let i = 0; i < numRows; i++) {
       const rowValues: Record<string, boolean> = {};
 
-      // Define os valores lógicos para as variáveis
       allVariables.forEach((variable, index) => {
         const value = Boolean((~i >> (allVariables.length - index - 1)) & 1);
         truthTable[variable].push(value);
         rowValues[variable] = value;
       });
 
-      // Resolve cada expressão e adiciona o resultado à tabela verdade
       for (const expression of expressions) {
         const result = await this.resolveExpression(expression.expr, rowValues);
         truthTable[expression.expr2].push(result);
