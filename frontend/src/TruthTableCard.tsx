@@ -22,7 +22,7 @@ import { toast } from "react-hot-toast";
 
 const getTableTruthData = async (expressions: string[]) => {
   try {
-    const url = "http://localhost:3000/tables/truth";
+    const url = "http://54.224.118.124:3000/tables/truth";
     const response = await fetch(url, {
       method: "POST",
       headers: {
